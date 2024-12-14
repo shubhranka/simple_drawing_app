@@ -2,15 +2,7 @@
 
 import React from "react";
 import { FloatingDock } from "@/components/ui/floating-dock";
-import {
-  IconBrandGithub,
-  IconColorPicker,
-  IconColorSwatch,
-  IconTextColor,
-} from "@tabler/icons-react";
-import Image from "next/image";
 import { EraserIcon, PenLine } from "lucide-react";
-import { HexColorInput, HexColorPicker, RgbaColorPicker } from "react-colorful";
 
 
 interface IconContainerProps {
@@ -22,13 +14,13 @@ interface IconContainerProps {
 export function FloatingDockDemo(
     {color="#FFFFFF", setColor, clear}: IconContainerProps
 ) {
-    console.log(color);
   const links = [
     {
       title: "Clear",
       icon: (
         <EraserIcon onClick={clear} className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
+      func: clear,
     },
     {
       title: "Color",
@@ -37,7 +29,6 @@ export function FloatingDockDemo(
          
         </div>
       ),
-      href: "#",
     },
     {
       title: "Pen Size",
