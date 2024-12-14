@@ -71,7 +71,7 @@ export default function Canvas() {
         const base64ImageData = canvasRef.current?.toDataURL("image/jpeg");
         const base64Image = base64ImageData?.split(",")[1];
         drawingData = ctx?.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GOOGLE_API_KEY}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
