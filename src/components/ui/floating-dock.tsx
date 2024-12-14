@@ -15,15 +15,17 @@ export const FloatingDock = ({
   items,
   desktopClassName,
   mobileClassName,
+  func,
 }: {
   items: { title: string; icon: React.ReactNode; }[];
   desktopClassName?: string;
   mobileClassName?: string;
+  func?: () => void;
 }) => {
   return (
     <>
-      <FloatingDockDesktop items={items} className={desktopClassName} />
-      <FloatingDockMobile items={items} className={mobileClassName} />
+      <FloatingDockDesktop items={items} className={desktopClassName} func={func} />
+      <FloatingDockMobile items={items} className={mobileClassName} func={func}/>
     </>
   );
 };
@@ -32,7 +34,7 @@ const FloatingDockMobile = ({
   items,
   className,
 }: {
-  items: { title: string; icon: React.ReactNode; }[];
+  items: { title: string; icon: React.ReactNode; func?: () => void }[];
   className?: string;
 }) => {
   const [open, setOpen] = useState(false);
@@ -64,6 +66,7 @@ const FloatingDockMobile = ({
                 <div
                   key={item.title}
                   className="h-10 w-10 rounded-full bg-gray-50 dark:bg-neutral-900 flex items-center justify-center"
+                  onClick={item.func}
                 >
                   <div className="h-4 w-4">{item.icon}</div>
                 </div>
@@ -86,7 +89,7 @@ const FloatingDockDesktop = ({
   items,
   className,
 }: {
-  items: { title: string; icon: React.ReactNode;  }[];
+  items: { title: string; icon: React.ReactNode; func?: () => void }[];
   className?: string;
 }) => {
   let mouseX = useMotionValue(Infinity);
@@ -100,7 +103,7 @@ const FloatingDockDesktop = ({
       )}
     >
       {items.map((item) => (
-        <IconContainer mouseX={mouseX} key={item.title} {...item} />
+        <IconContainer mouseX={mouseX} key={item.title} {...item} func={item.func} />
       ))}
     </motion.div>
   );
@@ -110,10 +113,12 @@ function IconContainer({
   mouseX,
   title,
   icon,
+  func
 }: {
   mouseX: MotionValue;
   title: string;
   icon: React.ReactNode;
+  func?: () => void
 }) {
   let ref = useRef<HTMLDivElement>(null);
 
@@ -158,7 +163,7 @@ function IconContainer({
   const [hovered, setHovered] = useState(false);
 
   return (
-    <div className="cursor-pointer">
+    <div className="cursor-pointer" onClick={func}>
       <motion.div
         ref={ref}
         style={{ width, height }}

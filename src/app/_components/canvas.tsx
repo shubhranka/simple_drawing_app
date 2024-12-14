@@ -33,23 +33,35 @@ export default function Canvas() {
         setCtx(context);
     }, []);
 
-
-    const startDrawing = (e: React.MouseEvent) => {
+    const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
         setIsDrawing(true);
-        setLastPoint([e.nativeEvent.offsetX, e.nativeEvent.offsetY]);       
+        if (e.touches) {
+            setLastPoint([e.touches[0].clientX, e.touches[0].clientY]);
+        }else{
+            setLastPoint([e.nativeEvent.offsetX, e.nativeEvent.offsetY]);       
+        }
         if(!ctx) return;
         ctx.fillStyle = "white";
         ctx.strokeStyle = "white";
+        ctx.lineWidth = 3;
     }
 
     const stopDrawing = () => {
         setIsDrawing(false);
     }
 
-    const draw = (e: React.MouseEvent) => {
+    const draw = (e: React.MouseEvent | React.TouchEvent) => {
+
+        // console.log(e.touches[0].clientX, e.touches[0].clientY);
+
+        let currentPoint = [0,0];
         if (!isDrawing) return;
 
-        const currentPoint = [e.nativeEvent.offsetX, e.nativeEvent.offsetY];
+        if (e.touches) {
+            currentPoint = [e.touches[0].clientX, e.touches[0].clientY];
+        }else{
+            currentPoint = [e.nativeEvent.offsetX, e.nativeEvent.offsetY];
+        }
 
         if (ctx) {
             ctx.beginPath();
@@ -57,14 +69,32 @@ export default function Canvas() {
             ctx.lineTo(currentPoint[0], currentPoint[1]);
             ctx.stroke();
             setLastPoint(currentPoint);
-            setPoints([...points, currentPoint]);
+            // setPoints([...points, currentPoint]);
         }
-
     }
+
+    const throttle = (callback: (e: React.MouseEvent | React.TouchEvent) => void, delay: number) => {
+        let shouldWait = false;
+        let timeout: NodeJS.Timeout | null = null;
+
+        return (e: React.MouseEvent | React.TouchEvent) => {
+          if (shouldWait) return;
+
+          shouldWait = true;
+          timeout = setTimeout(() => {
+            callback(e);
+            shouldWait = false;
+          }, delay);
+        };
+      };    
+
+    const throttledDraw = throttle(draw, 100);
+
+    
 
 
     return <>
-    <canvas ref={canvasRef} className="w-full h-full" onMouseDown={startDrawing} onMouseUp={stopDrawing} onMouseMove={draw} />
+    <canvas ref={canvasRef} className="w-full h-full" onTouchStart={startDrawing} onTouchMove={throttledDraw} onTouchEnd={stopDrawing} onMouseDown={startDrawing} onMouseUp={stopDrawing} onMouseMove={draw} />
     <FloatingDockDemo clear={clearCanvas} />
     </>
 }
