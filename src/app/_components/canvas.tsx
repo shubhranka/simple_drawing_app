@@ -7,7 +7,7 @@ export default function Canvas() {
 
     const [isDrawing, setIsDrawing] = useState(false);
     const [lastPoint, setLastPoint] = useState<number[]>([0,0]);
-    const [points, setPoints] = useState<number[][]>([]);
+    // const [points, setPoints] = useState<number[][]>([]);
     const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
     const [color, setColor] = useState("#FFFFFF");
@@ -16,7 +16,7 @@ export default function Canvas() {
     const clearCanvas = () => {
         if(!ctx) return;
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        setPoints([]);
+        // setPoints([]);
     }
 
 
@@ -37,10 +37,10 @@ export default function Canvas() {
 
     const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
         setIsDrawing(true);
-        if (e.touches) {
-            setLastPoint([e.touches[0].clientX, e.touches[0].clientY]);
+        if ((e as React.TouchEvent).touches) {
+            setLastPoint([(e as React.TouchEvent).touches[0].clientX, (e as React.TouchEvent).touches[0].clientY]);
         }else{
-            setLastPoint([e.nativeEvent.offsetX, e.nativeEvent.offsetY]);       
+            setLastPoint([(e as React.MouseEvent).nativeEvent.offsetX, (e as React.MouseEvent).nativeEvent.offsetY]);       
         }
         if(!ctx) return;
         // ctx.fillStyle = "white";
@@ -59,10 +59,11 @@ export default function Canvas() {
         let currentPoint = [0,0];
         if (!isDrawing) return;
 
-        if (e.touches) {
-            currentPoint = [e.touches[0].clientX, e.touches[0].clientY];
+        if ((e as React.TouchEvent).touches) {
+
+            currentPoint = [(e as React.TouchEvent).touches[0].clientX, (e as React.TouchEvent).touches[0].clientY];
         }else{
-            currentPoint = [e.nativeEvent.offsetX, e.nativeEvent.offsetY];
+            currentPoint = [(e as React.MouseEvent).nativeEvent.offsetX, (e as React.MouseEvent).nativeEvent.offsetY];
         }
 
         if (ctx) {
@@ -77,13 +78,13 @@ export default function Canvas() {
 
     const throttle = (callback: (e: React.MouseEvent | React.TouchEvent) => void, delay: number) => {
         let shouldWait = false;
-        let timeout: NodeJS.Timeout | null = null;
+        // let timeout: NodeJS.Timeout | null = null;
 
         return (e: React.MouseEvent | React.TouchEvent) => {
           if (shouldWait) return;
 
           shouldWait = true;
-          timeout = setTimeout(() => {
+          setTimeout(() => {
             callback(e);
             shouldWait = false;
           }, delay);
