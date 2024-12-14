@@ -69,33 +69,20 @@ export default function Canvas() {
         if (checkLoading) return;
         setCheckLoading(true);
         const base64ImageData = canvasRef.current?.toDataURL("image/jpeg");
-        const base64Image = base64ImageData?.split(",")[1];
+        // const base64Image = base64ImageData?.split(",")[1];
         drawingData = ctx?.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GOOGLE_API_KEY}`, {
+        const response = await fetch("https://simple-drawing-app-backend.onrender.com/check", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                "contents": [{
-                    "parts": [{
-                        "text": `
-                        Is this image looks like a ${thing} or close to it? Just give me true or false.
-                        `
-                    },
-                    {
-                        "inlineData": {
-                            "mimeType": "image/jpeg",
-                            "data": base64Image
-                        }
-                    }]
-                }]
+                dataURL: base64ImageData
             })
         })
-        
         const data = await response.json();
-        const result = data.candidates[0].content.parts[0].text.toLowerCase().includes('true');
-        
+        const result = data;
+
         if (result) {
             createConfetti();
             setTimeout(() => {
@@ -117,31 +104,10 @@ export default function Canvas() {
 
     const getThing = async () => {
         setLoading(true);
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GOOGLE_API_KEY}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                "contents": [{
-                    "parts": [{
-                        "text": `
-                        Give some things that can be drawn simply by using mouse on a white board. Give simple not too hard to draw. Do not repeat the things you have already given. Just give one thing, in the below format and do not print anything else:
-  
-                        Thing: {your thing}
-                    
-                        Things that you have already given:
-                        {${alreadyGivenThings.join(',')}}
 
-                        Random number: ${Math.random()}
-                        `}]
-                }]
-            })
-        })
-
+        const response = await fetch("https://simple-drawing-app-backend.onrender.com")
         const data = await response.json();
-        const thingResponse = data.candidates[0].content.parts[0].text;
-        const thing = thingResponse.split("Thing: ")[1];
+        const thing = data.thing
         setThing(thing);
         setLoading(false);
         setAlreadyGivenThings([...alreadyGivenThings, thing]);
