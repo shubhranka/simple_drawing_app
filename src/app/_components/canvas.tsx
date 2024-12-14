@@ -77,7 +77,8 @@ export default function Canvas() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                dataURL: base64ImageData
+                dataURL: base64ImageData,
+                thing: thing
             })
         })
         const data = await response.json();
