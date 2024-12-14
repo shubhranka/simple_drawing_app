@@ -3,16 +3,21 @@
 import React from "react";
 import { FloatingDock } from "@/components/ui/floating-dock";
 import { EraserIcon, PenLine } from "lucide-react";
+import { HexColorPicker } from "react-colorful";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Slider } from "../ui/slider";
 
 
 interface IconContainerProps {
     color: string;
     setColor: (color: string) => void;
-    clear: () => void
+    clear: () => void;
+    penSize: number;
+    setPenSize: (penSize: number) => void;
 }
 
 export function FloatingDockDemo(
-    {color="#FFFFFF", setColor, clear}: IconContainerProps
+    {color="#FFFFFF", setColor, clear, penSize, setPenSize}: IconContainerProps
 ) {
   const links = [
     {
@@ -25,15 +30,27 @@ export function FloatingDockDemo(
     {
       title: "Color",
       icon: (
-        <div className={`h-full w-full text-neutral-500 dark:text-neutral-300 rounded-full`} style={{background: color}}>
-         
-        </div>
+        <Popover>
+            <PopoverTrigger asChild>
+                <div className="h-full w-full text-neutral-500 dark:text-neutral-300 rounded-full" style={{background: color}}/>
+            </PopoverTrigger>
+            <PopoverContent asChild>
+                <HexColorPicker color={color} onChange={setColor} />
+            </PopoverContent>
+        </Popover>
       ),
     },
     {
       title: "Pen Size",
       icon: (
-        <PenLine className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <Popover>
+            <PopoverTrigger asChild>
+                <PenLine className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            </PopoverTrigger>
+            <PopoverContent asChild>
+                <Slider defaultValue={[penSize]} min={1} max={10} step={1} onValueChange={(val) => setPenSize(val[0]) } />
+            </PopoverContent>
+        </Popover>
       ),
       href: "#",
     },

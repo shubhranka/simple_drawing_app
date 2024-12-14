@@ -10,6 +10,8 @@ export default function Canvas() {
     const [points, setPoints] = useState<number[][]>([]);
     const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
+    const [color, setColor] = useState("#FFFFFF");
+    const [penSize, setPenSize] = useState(3);
 
     const clearCanvas = () => {
         if(!ctx) return;
@@ -41,9 +43,9 @@ export default function Canvas() {
             setLastPoint([e.nativeEvent.offsetX, e.nativeEvent.offsetY]);       
         }
         if(!ctx) return;
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "white";
-        ctx.lineWidth = 3;
+        // ctx.fillStyle = "white";
+        ctx.strokeStyle = color;
+        ctx.lineWidth = penSize;
     }
 
     const stopDrawing = () => {
@@ -95,6 +97,6 @@ export default function Canvas() {
 
     return <>
     <canvas ref={canvasRef} className="w-full h-full" onTouchStart={startDrawing} onTouchMove={throttledDraw} onTouchEnd={stopDrawing} onMouseDown={startDrawing} onMouseUp={stopDrawing} onMouseMove={draw} />
-    <FloatingDockDemo clear={clearCanvas} />
+    <FloatingDockDemo clear={clearCanvas} setColor={setColor} color={color} setPenSize={setPenSize} penSize={penSize}/>
     </>
 }
