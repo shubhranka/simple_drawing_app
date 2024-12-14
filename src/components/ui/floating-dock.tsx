@@ -14,17 +14,15 @@ export const FloatingDock = ({
   items,
   desktopClassName,
   mobileClassName,
-  func,
 }: {
-  items: { title: string; icon: React.ReactNode; }[];
+  items: { title: string; icon: React.ReactNode; func?: () => void }[];
   desktopClassName?: string;
   mobileClassName?: string;
-  func?: () => void;
 }) => {
   return (
     <>
-      <FloatingDockDesktop items={items} className={desktopClassName} func={func} />
-      <FloatingDockMobile items={items} className={mobileClassName} func={func}/>
+      <FloatingDockDesktop items={items} className={desktopClassName} />
+      <FloatingDockMobile items={items} className={mobileClassName}/>
     </>
   );
 };
