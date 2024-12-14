@@ -60,7 +60,7 @@ export default function Canvas() {
         if (!isDrawing) return;
 
         if ((e as React.TouchEvent).touches) {
-
+            console.log((e as React.TouchEvent).touches[0].clientX, (e as React.TouchEvent).touches[0].clientY);
             currentPoint = [(e as React.TouchEvent).touches[0].clientX, (e as React.TouchEvent).touches[0].clientY];
         }else{
             currentPoint = [(e as React.MouseEvent).nativeEvent.offsetX, (e as React.MouseEvent).nativeEvent.offsetY];
@@ -91,7 +91,7 @@ export default function Canvas() {
         };
       };    
 
-    const throttledDraw = throttle(draw, 100);
+    const throttledDraw = throttle(draw, 30);
 
     
 
