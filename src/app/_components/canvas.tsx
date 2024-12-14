@@ -2,9 +2,9 @@
 
 import { FloatingDockDemo } from "@/components/globals/my-floating-dock";
 import { Button } from "@/components/ui/button";
-import { Card, CardFooter, CardContent, CardDescription, CardTitle, CardHeader } from "@/components/ui/card";
+import { Card, CardTitle, CardHeader } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Loader2, SplitIcon } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
 
 class Confetti {
