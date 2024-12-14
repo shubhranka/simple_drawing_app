@@ -276,7 +276,7 @@ export default function Canvas() {
                 <TooltipTrigger asChild>
                     <Card>
                         <CardHeader>
-                            {loading ? <CardTitle className="text-lg"><Loader2 className="animate-spin" /></CardTitle> : <CardTitle className="text-lg">Draw {thing}</CardTitle>}
+                            {loading ? <CardTitle className="text-lg"><Loader2 className="animate-spin" /></CardTitle> : <CardTitle className="text-xs md:text-xl sm:text-lg">Draw {thing}</CardTitle>}
                         </CardHeader>
                     </Card>
                 </TooltipTrigger>
