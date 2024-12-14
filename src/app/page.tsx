@@ -7,5 +7,5 @@ export default function Home() {
       <SparklesPreview text="Draw it" />
       <Canvas  />
     </main>
-  );
+  )
 }

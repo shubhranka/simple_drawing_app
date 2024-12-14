@@ -1,5 +1,6 @@
 "use client";
 
+import { FloatingDockDemo } from "@/components/globals/my-floating-dock";
 import React, { useState } from "react";
 
 export default function Canvas() {
@@ -9,6 +10,12 @@ export default function Canvas() {
     const [points, setPoints] = useState<number[][]>([]);
     const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
+
+    const clearCanvas = () => {
+        if(!ctx) return;
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        setPoints([]);
+    }
 
 
     React.useEffect(() => {
@@ -56,5 +63,8 @@ export default function Canvas() {
     }
 
 
-    return <canvas ref={canvasRef} className="w-full h-full" onMouseDown={startDrawing} onMouseUp={stopDrawing} onMouseMove={draw} />;
+    return <>
+    <canvas ref={canvasRef} className="w-full h-full" onMouseDown={startDrawing} onMouseUp={stopDrawing} onMouseMove={draw} />
+    <FloatingDockDemo clear={clearCanvas} />
+    </>
 }

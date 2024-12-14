@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${kalam1.className} ${kalam2.className} bg-black text-white`}
+        className={`${kalam1.className} ${kalam2.className} bg-black text-white dark`}
       >
         {children}
       </body>
