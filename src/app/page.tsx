@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <main className="relative">
       <SparklesPreview text="Draw it" />
-      <Canvas  />
+      <Canvas />
     </main>
   )
 }
