@@ -2,12 +2,7 @@
 
 import React from "react";
 import { FloatingDock } from "@/components/ui/floating-dock";
-import { EraserIcon, PenLine } from "lucide-react";
-import { HexColorPicker } from "react-colorful";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Slider } from "../ui/slider";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 
 
 interface IconContainerProps {

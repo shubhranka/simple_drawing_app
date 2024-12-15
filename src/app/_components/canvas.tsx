@@ -4,7 +4,7 @@ import { FloatingDockDemo } from "@/components/globals/my-floating-dock-bottom";
 import { FloatingDockBottomLevel } from "@/components/globals/my-floating-dock-bottom-level";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardHeader } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
 
