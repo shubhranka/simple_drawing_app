@@ -1,6 +1,7 @@
 "use client";
 
-import { FloatingDockDemo } from "@/components/globals/my-floating-dock";
+import { FloatingDockDemo } from "@/components/globals/my-floating-dock-bottom";
+import { FloatingDockBottomLevel } from "@/components/globals/my-floating-dock-bottom-level";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle, CardHeader } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -61,9 +62,11 @@ export default function Canvas() {
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [checkLoading, setCheckLoading] = useState<boolean>(false);
+    const [level, setLevel] = useState<"easy" | "medium" | "hard">("easy");
     let animationFrameId: number | null = null;
     let confetti: Confetti[] = [];
     let drawingData: ImageData | undefined = undefined;
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
     const checkImageIsThing = async () => {
         if (checkLoading) return;
@@ -71,7 +74,7 @@ export default function Canvas() {
         const base64ImageData = canvasRef.current?.toDataURL("image/jpeg");
         // const base64Image = base64ImageData?.split(",")[1];
         drawingData = ctx?.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-        const response = await fetch("https://simple-drawing-app-backend.onrender.com/check", {
+        const response = await fetch(`${backendUrl}/check`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -106,7 +109,7 @@ export default function Canvas() {
     const getThing = async () => {
         setLoading(true);
 
-        const response = await fetch("https://simple-drawing-app-backend.onrender.com")
+        const response = await fetch(`${backendUrl}/${level}`)
         const data = await response.json();
         const thing = data.thing
         setThing(thing);
@@ -231,31 +234,27 @@ export default function Canvas() {
                 cancelAnimationFrame(animationFrameId);
             }
         };
-    }, []);
+    }, [animationFrameId]);
 
     return <>
         <canvas ref={canvasRef} className="w-full h-full" onTouchStart={startDrawing} onTouchMove={throttledDraw} onTouchEnd={stopDrawing} onMouseDown={startDrawing} onMouseUp={stopDrawing} onMouseMove={draw} />
-        <FloatingDockDemo clear={clearCanvas} setColor={setColor} color={color} setPenSize={setPenSize} penSize={penSize} />
+        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex flex-row gap-6">
+
+            <FloatingDockDemo clear={clearCanvas} setColor={setColor} color={color} setPenSize={setPenSize} penSize={penSize} />
+            <FloatingDockBottomLevel level={level} setLevel={setLevel} />
+        </div>
 
         <div className="absolute top-5 right-5 flex flex-col gap-2">
+        <Button onClick={getThing} className="dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700">{loading ? <Loader2 className="animate-spin" /> : "Change Image"}</Button>
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Card>
                         <CardHeader>
-                            {loading ? <CardTitle className="text-lg"><Loader2 className="animate-spin" /></CardTitle> : <CardTitle className="text-xs md:text-xl sm:text-lg">Draw {thing}</CardTitle>}
+                            {loading ? <CardTitle className="text-lg w-full flex justify-center items-center"><Loader2 className="animate-spin" /></CardTitle> : <CardTitle className="text-xs md:text-xl sm:text-lg">Draw {thing}</CardTitle>}
                         </CardHeader>
                     </Card>
                 </TooltipTrigger>
-                {!loading && <TooltipContent>
-                    <div className="flex flex-col gap-2">
-                        <p>Click to change the drawing</p>
-                        <Button onClick={() => {
-                            clearCanvas();
-                            getThing();
-                        }}>Change</Button>
-                    </div>
-                </TooltipContent>}
             </Tooltip>
         </TooltipProvider>
         <Button onClick={checkImageIsThing} className="dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600">{checkLoading ? <Loader2 className="animate-spin" /> : "Check"}</Button>

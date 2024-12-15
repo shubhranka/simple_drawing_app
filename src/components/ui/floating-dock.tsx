@@ -15,7 +15,7 @@ export const FloatingDock = ({
   desktopClassName,
   mobileClassName,
 }: {
-  items: { title: string; icon: React.ReactNode; func?: () => void }[];
+  items: { title: string; icon: React.ReactNode; func?: () => void, background?: string }[];
   desktopClassName?: string;
   mobileClassName?: string;
 }) => {
@@ -31,7 +31,7 @@ const FloatingDockMobile = ({
   items,
   className,
 }: {
-  items: { title: string; icon: React.ReactNode; func?: () => void }[];
+  items: { title: string; icon: React.ReactNode; func?: () => void, background?: string }[];
   className?: string;
 }) => {
   const [open, setOpen] = useState(false);
@@ -64,6 +64,7 @@ const FloatingDockMobile = ({
                   key={item.title}
                   className="h-10 w-10 rounded-full bg-gray-50 dark:bg-neutral-900 flex items-center justify-center"
                   onClick={item.func}
+                  style={{ background: item.background }}
                 >
                   <div className="h-4 w-4">{item.icon}</div>
                 </div>
@@ -110,12 +111,14 @@ function IconContainer({
   mouseX,
   title,
   icon,
-  func
+  func,
+  background
 }: {
   mouseX: MotionValue;
   title: string;
   icon: React.ReactNode;
-  func?: () => void
+  func?: () => void;
+  background?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -166,7 +169,7 @@ function IconContainer({
         style={{ width, height }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="aspect-square rounded-full bg-gray-200 dark:bg-neutral-800 flex items-center justify-center relative"
+        className={cn("aspect-square rounded-full bg-gray-200 flex items-center justify-center relative", background ? background : "dark:bg-neutral-800")}
       >
         <AnimatePresence>
           {hovered && (
@@ -182,7 +185,7 @@ function IconContainer({
         </AnimatePresence>
         <motion.div
           style={{ width: widthIcon, height: heightIcon }}
-          className="flex items-center justify-center"
+          className={cn("flex items-center justify-center")}
         >
           {icon}
         </motion.div>

@@ -56,7 +56,7 @@ export function FloatingDockDemo(
     },
   ];
   return (
-    <div className="flex items-center justify-center absolute bottom-1 left-1/2 -translate-x-1/2">
+    <div className="flex items-center justify-center">
       <FloatingDock
         items={links}
       />
