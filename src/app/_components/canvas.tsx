@@ -140,6 +140,10 @@ export default function Canvas() {
         getThing();
     }, []);
 
+    React.useEffect(() => {
+        getThing();
+    }, [level]);
+
     const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
         setIsDrawing(true);
         if ((e as React.TouchEvent).touches) {
