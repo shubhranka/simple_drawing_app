@@ -66,7 +66,7 @@ export default function Canvas() {
     let animationFrameId: number | null = null;
     let confetti: Confetti[] = [];
     let drawingData: ImageData | undefined = undefined;
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const backendUrl = process.env.BACKEND_URL;
 
     const checkImageIsThing = async () => {
         if (checkLoading) return;
