@@ -66,7 +66,7 @@ export default function Canvas() {
     let animationFrameId: number | null = null;
     let confetti: Confetti[] = [];
     let drawingData: ImageData | undefined = undefined;
-    const backendUrl = process.env.RENDER_URL;
+    const backendUrl = "https://simple-drawing-app-backend.onrender.com";
 
     const checkImageIsThing = async () => {
         if (checkLoading) return;
